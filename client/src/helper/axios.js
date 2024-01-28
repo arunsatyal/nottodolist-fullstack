@@ -2,7 +2,7 @@
 
 import axios from "axios";
 
-const API_BASE_URL = import.meta.PROD
+const API_BASE_URL = import.meta.env.PROD
   ? "https://todolist-fullstack-icni.onrender.com/api/tasks"
   : "http://localhost:8000/api/tasks";
 
