@@ -1,30 +1,30 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState }        from "react";
 
-import { Col, Container, Row, Stack } from 'react-bootstrap';
+import { Col, Container, Row, Stack } from "react-bootstrap";
 
-import TaskForm from './components/taskForm';
-import TaskList from './components/taskList';
-import { getTasks } from './helper/axios';
+import TaskForm                       from "./components/taskForm";
+import TaskList                       from "./components/taskList";
+import { getTasks }                   from "./helper/axios";
 
 function App() {
-  const [taskList, setTaskList] = useState([])
+  const [taskList, setTaskList] = useState([]);
 
-  const fetchTasks = async ()=>{
-    const result = await getTasks()
-    
-    if(result.status === "success"){
-      setTaskList(result.data)
+  const fetchTasks = async () => {
+    const result = await getTasks();
+
+    if (result.status === "success") {
+      setTaskList(result.data);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchTasks()
-  }, [])
+    fetchTasks();
+  }, []);
 
-  const completedTask = taskList.filter(task => task.type === "completed")
-  const badTask = taskList.filter(task => task.type === "bad")
+  const completedTask = taskList.filter((task) => task.type === "completed");
+  const badTask = taskList.filter((task) => task.type === "bad");
 
   return (
     <Container>
@@ -34,20 +34,27 @@ function App() {
 
       <TaskForm fetchTasks={fetchTasks} />
 
-      <Stack className='border p-4 shadow bg-white my-2'>
+      <Stack className="border p-4 shadow bg-white my-2">
         <Row>
           <Col>
-            <TaskList title="COMPLETED TASK" taskList = {completedTask} fetchTasks={fetchTasks} />
+            <TaskList
+              title="COMPLETED TASK"
+              taskList={completedTask}
+              fetchTasks={fetchTasks}
+            />
           </Col>
 
           <Col>
-            <TaskList title="BAD TASK" taskList = {badTask} fetchTasks={fetchTasks} />
+            <TaskList
+              title="BAD TASK"
+              taskList={badTask}
+              fetchTasks={fetchTasks}
+            />
           </Col>
         </Row>
-        </Stack>
-      
+      </Stack>
     </Container>
-  )
+  );
 }
 
-export default App
+export default App;
