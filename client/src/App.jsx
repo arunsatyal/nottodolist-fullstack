@@ -1,12 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { useEffect, useState }        from "react";
+import { useEffect, useState } from "react";
 
 import { Col, Container, Row, Stack } from "react-bootstrap";
 
-import TaskForm                       from "./components/taskForm";
-import TaskList                       from "./components/taskList";
-import { getTasks }                   from "./helper/axios";
+import TaskForm from "./components/taskForm";
+import TaskList from "./components/taskList";
+import { getTasks } from "./helper/axios";
 
 function App() {
   const [taskList, setTaskList] = useState([]);
