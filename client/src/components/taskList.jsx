@@ -12,6 +12,11 @@ const TaskList = (props) => {
 
   const [showAlert, setShowAlert] = useState(false);
 
+  // Function to calculate total time
+  const calculateTotalTime = () => {
+    return taskList.reduce((total, task) => total + task.time_to_complete, 0);
+  };
+
   const handleOnClick = async (id) => {
     const result = await deleteTask(id);
 
@@ -37,7 +42,7 @@ const TaskList = (props) => {
 
   return (
     <Stack className="py-4">
-      <strong>{title}</strong>
+      <strong className="mb-3">{title}</strong>
 
       <Alert
         show={showAlert}
@@ -88,6 +93,10 @@ const TaskList = (props) => {
           ))}
         </ListGroup>
       )}
+      <p className="mt-3">
+        Total time to complete: {calculateTotalTime()}
+        {calculateTotalTime() < 2 ? " hour" : " hours"}
+      </p>
     </Stack>
   );
 };
