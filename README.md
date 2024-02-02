@@ -89,26 +89,41 @@ yarn add nodemon
 
 #### CORS
 
-    - NPM `npm install cors`
-    - Yarn `yarn add cors`
+NPM
 
-### 🗄️ Setting up Database Connection to MongoDB with Server.js
+```bash
+npm install cors
+```
+
+Yarn
+
+```bash
+yarn add cors
+```
+
+### 🗄️ Setting up Server with Server.js
 
 Create 'server.js' file inside 'api' directory and paste following code:
 
 ```JavaScript
-import express from "express"
-import cors from 'cors'
-import path from "path"
+import express          from "express"
+import cors             from 'cors'
+import path             from "path"
 
-const _dirname = path.resolve()
+
+// Import dependencies
 
 import { connectMongo } from "./src/config/dbConfig.js"
+import taskRouter       from "./src/router/taskRouter.js"
 
-import taskRouter from "./src/router/taskRouter.js"
+
+// Define dirname and Port
+
+const _dirname = path.resolve()
+const PORT = 8000
 
 const app = express()
-const PORT = 8000
+
 
 // Define the CORS options
 const corsOptions = {
@@ -136,5 +151,29 @@ app.use('/', express.static(path.join(_dirname, 'frontendBuild')))
 app.listen(PORT, (error)=>{
   error ? console.log("Error", error) : console.log("Your seerver is running at http://localhost:" + PORT)
 })
+
+```
+
+### Setting up Database Connection
+
+Create a new directory named 'src' inside the 'api' project directory. Then, within the 'src' directory, create another directory called 'config'. This structure will organize the project more efficiently.
+
+Now, in 'config' folder, create a file `dbConfig.js` and paste the following code:
+
+```Javascript
+import mongoose         from "mongoose";
+
+const mongo_db_url = "mongodb://localhost:27017/ntdl-db";
+
+export const connectMongo = () => {
+  try {
+    const connect = mongoose.connect(mongo_db_url);
+    if (connect) {
+      console.log("Database conected at" + mongo_db_url);
+    }
+  } catch (error) {
+    console.log("Error:", error);
+  }
+};
 
 ```
