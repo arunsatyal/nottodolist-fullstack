@@ -18,10 +18,10 @@ This application runs on Windows 10, 11, macOS and Linux. I've built and tested 
 
 Follow the simple steps to setup your local server using vscode terminal:
 
-#### 📁 Creating directories
+#### 📁 Creating Directory
 
 - Create new directory 'not-todo-list' `mkdir not-todo-list`
-- Inside 'not-todo-list' directory, create another 2 directories named 'api' and 'client'
+- Inside 'not-todo-list' directory, create another directory named 'api'
 
 - Type `cd api` to go inside the 'api' directory
 
@@ -360,5 +360,104 @@ taskRouter.delete("/:id", async(req, res) => {
 })
 
 export default taskRouter
+
+```
+
+### 👩🏻‍💻 Setting up Front-End (Client)
+
+I used Vite + React to setup application front-end and Bootstrap to biuld front-end user interface.
+
+In your terminal, navigate to your project root directory 'not-todo-list' and type following command to install Vite
+
+#### Inatall Vite using Vscode Terminal:
+
+```bash
+npm create vite@latest
+```
+
+```bash
+yarn create vite@latest
+```
+
+- Type your project name 'client' and hit enter
+- Select React from the available options and hit enter.
+- Select JavaScript from the available options and hit enter.
+- Type `cd client` in terminal
+- Type `yarn` and enter
+- Type `yarn dev` to run your front-end initial design on your local server.
+
+### 💿 Install React Bootstrap using NPM or Yarn
+
+`npm install react-bootstrap bootstrap`
+
+`yarn add react-bootstrap bootstrap`
+
+### ✏️ Reset / Cleanup Default Designs
+
+When you install Vite and run your server, it will displays default design with vite react logo and other texts which needs to delete and replace following code in App.jsx file located in `client/src/App.jsx`
+
+```Javascript
+
+import "bootstrap/dist/css/bootstrap.min.css";
+
+import { useEffect, useState }                                   from "react";
+
+import { Col, Container, Row, Stack }                            from "react-bootstrap";
+
+import TaskForm                                                  from "./components/taskForm";
+import TaskList                                                  from "./components/taskList";
+import { getTasks }                                              from "./helper/axios";
+
+function App() {
+ const [taskList, setTaskList] = useState([]);
+
+ const fetchTasks = async () => {
+   const result = await getTasks();
+
+   if (result.status === "success") {
+     setTaskList(result.data);
+   }
+ };
+
+ useEffect(() => {
+   fetchTasks();
+ }, []);
+
+ const completedTask = taskList.filter((task) => task.type === "completed");
+ const badTask = taskList.filter((task) => task.type === "bad");
+
+ return (
+   <Container>
+     <Row className="p-2 text-center">
+       <h1>Not ToDo List</h1>
+     </Row>
+
+     <TaskForm fetchTasks={fetchTasks} />
+
+     <Stack className="border p-4 shadow bg-white my-2">
+       <Row>
+         <Col>
+           <TaskList
+             title="COMPLETED TASK"
+             taskList={completedTask}
+             fetchTasks={fetchTasks}
+           />
+         </Col>
+
+         <Col>
+           <TaskList
+             title="BAD TASK"
+             taskList={badTask}
+             fetchTasks={fetchTasks}
+           />
+         </Col>
+       </Row>
+     </Stack>
+   </Container>
+ );
+}
+
+export default App;
+
 
 ```
