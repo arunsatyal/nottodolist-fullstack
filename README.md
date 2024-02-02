@@ -106,15 +106,15 @@ yarn add cors
 Create 'server.js' file inside 'api' directory and paste following code:
 
 ```JavaScript
-import express          from "express"
-import cors             from 'cors'
-import path             from "path"
+import express                                                   from "express"
+import cors                                                      from 'cors'
+import path                                                      from "path"
 
 
 // Import dependencies
 
-import { connectMongo } from "./src/config/dbConfig.js"
-import taskRouter       from "./src/router/taskRouter.js"
+import { connectMongo }                                          from "./src/config/dbConfig.js"
+import taskRouter                                                from "./src/router/taskRouter.js"
 
 
 // Define dirname and Port
@@ -161,7 +161,7 @@ Create a new directory named 'src' inside the 'api' project directory. Then, wit
 Now, in 'config' folder, create a file `dbConfig.js` and paste the following code:
 
 ```Javascript
-import mongoose         from "mongoose";
+import mongoose                                                  from "mongoose";
 
 
 // Define and connect to database URI
@@ -194,7 +194,7 @@ To make Schema, create one new directory named 'schema' inside the folder 'src'.
 
 ```Javascript
 
-import mongoose         from "mongoose";
+import mongoose                                                  from "mongoose";
 
 const TaskSchema = new mongoose.Schema({
   task_name: {
@@ -227,4 +227,138 @@ export default mongoose.model("tasks", TaskSchema);
 
 I wrote a simple data structure rules for different keys task_name, difficulty, time_to_complete, priority and type.
 
-### ⚙️ Creating Model
+### ⚙️ Creating Model to Perform CRUD Operation
+
+Model creates data as per rules defined by schema, organize and stores to database.
+In most of the projects we use model to perform CRUD operation. CRUD stands for Create, Read, Update and Delete the data from database.
+
+To create model, make new directory named 'model' inside 'src' folder and create new file 'TaskModel.js' inside the directory.
+
+Copy following code in TaskModel.js
+
+```Javascript
+import TaskSchema                                                from "../schema/TaskSchema.js"
+
+// Read all data
+export const getTasks = () => {
+  return TaskSchema.find();
+}
+
+// Read one data
+export const getTask = (id) => {
+  return TaskSchema.findById(id)
+}
+
+//Create a data
+export const createTask = (taskObj) => {
+  return TaskSchema(taskObj).save();
+}
+
+
+//Update a data
+export const updateTask = (id, updatedData) => {
+  return TaskSchema.findByIdAndUpdate(id, updatedData)
+}
+
+// Delete a data
+export const deleteTask = (id) => {
+  return TaskSchema.findByIdAndDelete(id)
+}
+```
+
+### 🌏 Router
+
+A router allows you to define routes based on the URL and HTTP method. Each route can have one or more handler functions, which are executed when the route is matched.
+
+To create router, simply make new directory called 'router' inside 'src' folder and create taskRouter.js file inside new 'router' directory and copy following code:
+
+```Javascript
+import express                                                   from "express"
+
+import { createTask, deleteTask, getTask, getTasks, updateTask } from "../model/TaskModel.js"
+
+const taskRouter = express.Router()
+
+// Index | Get all task
+taskRouter.get("/", (req, res) => {
+  getTasks()
+    .then((tasks)=>{
+      res.json({
+        status: "success",
+        data: tasks,
+      })
+    })
+    .catch((error) => {
+      res.json({
+        error: error,
+      })
+    })
+})
+
+// Show | get a single task
+taskRouter.get("/:id", (req, res) => {
+  getTask(req.params.id)
+    .then((task)=>{
+      res.json({
+        status: "success",
+        data: task,
+      })
+    })
+    .catch((error) => {
+      res.json({
+        error: error,
+      })
+    })
+})
+
+// Create | create a task
+taskRouter.post("/", (req, res) => {
+  createTask(req.body)
+    .then((task)=>{
+      res.json({
+        status: "success",
+        data: task,
+      })
+    })
+    .catch((error) => {
+      res.json({
+        error: error,
+      })
+    })
+})
+
+// Update | update a task
+taskRouter.patch("/:id", (req, res) => {
+  updateTask(req.params.id, req.body)
+    .then((task)=>{
+      res.json({
+        status: "success",
+        data: task,
+      })
+    })
+    .catch((error) => {
+      res.json({
+        error: error,
+      })
+    })
+})
+
+// Delete | delete a task
+taskRouter.delete("/:id", async(req, res) => {
+  deleteTask(req.params.id)
+    .then((task)=>{
+      res.json({
+        status: "success",
+        data: task,
+      })
+    })
+    .catch((error) => {
+      res.json({
+        error: error,
+      })
+    })
+})
+
+export default taskRouter
+
+```
