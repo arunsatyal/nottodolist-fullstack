@@ -101,7 +101,7 @@ Yarn
 yarn add cors
 ```
 
-### 🗄️ Setting up Server with Server.js
+### 🖥️ Setting up Server with Server.js
 
 Create 'server.js' file inside 'api' directory and paste following code:
 
@@ -154,7 +154,7 @@ app.listen(PORT, (error)=>{
 
 ```
 
-### Setting up Database Connection
+### 🗄️ Setting up Database Connection
 
 Create a new directory named 'src' inside the 'api' project directory. Then, within the 'src' directory, create another directory called 'config'. This structure will organize the project more efficiently.
 
@@ -163,7 +163,13 @@ Now, in 'config' folder, create a file `dbConfig.js` and paste the following cod
 ```Javascript
 import mongoose         from "mongoose";
 
+
+// Define and connect to database URI
+
 const mongo_db_url = "mongodb://localhost:27017/ntdl-db";
+
+
+// Function to connect MongoDB
 
 export const connectMongo = () => {
   try {
@@ -177,3 +183,48 @@ export const connectMongo = () => {
 };
 
 ```
+
+### 🚦 Creating Schema
+
+Schema defines the data structure, data types, relation between multiple tables, and data blueprint.
+
+In this project, I used schema to define data structure for each task.
+
+To make Schema, create one new directory named 'schema' inside the folder 'src'. Then create new file named 'TaskSchema.js' inside the 'src' directory and copy following code:
+
+```Javascript
+
+import mongoose         from "mongoose";
+
+const TaskSchema = new mongoose.Schema({
+  task_name: {
+    type: String,
+    required: true,
+  },
+  difficulty: {
+    type: String,
+    default: "easy",
+  },
+  time_to_complete: {
+    type: Number,
+    required: true,
+  },
+  priority: {
+    type: String,
+    default: "low",
+  },
+  type: {
+    type: String,
+    default: "completed",
+  },
+});
+
+export default mongoose.model("tasks", TaskSchema);
+
+```
+
+#### In above's schema:
+
+I wrote a simple data structure rules for different keys task_name, difficulty, time_to_complete, priority and type.
+
+### ⚙️ Creating Model
