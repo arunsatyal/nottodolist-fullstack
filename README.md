@@ -45,20 +45,47 @@ Follow the simple steps to setup your local server using vscode terminal:
 
 Yarn is just a better alternative to NPM. I recommend to use Yarn for faster installation process.
 
-#### Express
+#### Install Express
 
-- NPM `npm install express`
-- Yarn `yarn add express`
+NPM
 
-#### Mongoose
+```bash
+npm install nodemon
+```
 
-    - NPM `npm install mongoose`
-    - Yarn `yarn add mongoose`
+Yarn
 
-#### Nodemon
+```bash
+yarn add nodemon
+```
 
-    - NPM `npm install nodemon`
-    - Yarn `yarn add nodemon`
+#### Install Mongoose
+
+NPM
+
+```bash
+npm install mongoose
+```
+
+Yarn
+
+```bash
+yarn add mongoose
+```
+
+#### Install Nodemon
+
+NPM
+
+```bash
+npm install nodemon
+```
+
+Yarn
+
+```bash
+yarn add nodemon
+```
 
 #### CORS
 
